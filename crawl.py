@@ -1,4 +1,3 @@
-import re
 import urllib.parse
 import os
 from functools import reduce
@@ -9,11 +8,7 @@ import glob
 import urllib.request
 import urllib.parse
 
-# dir includes wiki raw data
-PUKIWIKI_DATA_DIR = "/tmp/test/pukiwiki/wiki"
-ELASTIC_SEARCH_ENDPOINT = "http://localhost:9200/"
-INDEX = "test_wiki_index"
-TYPE = "page"
+import config
 
 def crawl():
     # TODO: 差分のみ
