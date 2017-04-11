@@ -2,6 +2,7 @@ import urllib.parse
 import os
 from functools import reduce
 from datetime import date
+import time
 
 import json
 import glob
@@ -15,10 +16,28 @@ import config
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def crawl():
-    # TODO: 差分のみ
+    data = os.path.join(os.path.dirname(__file__), "data")
+
+    data_file_path = os.path.join(data, "last_crawled_time")
+
+    if os.path.exists(data_file_path):
+        with open(data_file_path) as f:
+            last_crawled = float(f.read())
+    else:
+        os.makedirs(data, exist_ok=True)
+        last_crawled = 0
+
     paths = glob.glob(os.path.join(config.PUKIWIKI_DATA_DIR, "*.txt"))
-    bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(x)) for x in paths)
-    client.bulk(bulk_string)
+    modified_paths = list(filter(lambda x: os.path.getmtime(x) > last_crawled, paths))
+
+    if modified_paths:
+        bulk_string = "\n".join(
+                _create_page_json_for_bulk(_get_page_data(x)) for x in modified_paths
+                )
+        client.bulk(bulk_string)
+
+    with open(data_file_path, "w") as f:
+        f.write(str(time.time()))
 
 def _create_page_json_for_bulk(data):
     # use filename as _id
