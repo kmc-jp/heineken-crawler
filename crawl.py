@@ -12,14 +12,12 @@ import config
 
 def crawl():
     # TODO: 差分のみ
-    paths = glob.glob(os.path.join(PUKIWIKI_DATA_DIR, "*.txt"))
-    bulk_string = reduce(lambda x, y: x + "\n" + y,
-            map(lambda x: _get_page_json_for_bulk(_get_page_data(x)), paths)
-            )
-
+    paths = glob.glob(os.path.join(config.PUKIWIKI_DATA_DIR, "*.txt"))
+    bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(x)) for x in paths)
 
     req = urllib.request.Request(
-            urllib.parse.urljoin(ELASTIC_SEARCH_ENDPOINT, "/_bulk"),
+            # response after refresh -> ?refresh=wait_for
+            urllib.parse.urljoin(config.ELASTIC_SEARCH_ENDPOINT, "/_bulk"),
             data=bulk_string.encode("utf8"), 
             headers={'content-type': 'application/json'}
             )
@@ -29,13 +27,16 @@ def crawl():
     except Exception as e:
         print(e.read())
 
-def _get_page_json_for_bulk(data):
-    head = json.dumps({"index" : { "_index": INDEX, "_type": TYPE }})
+def _create_page_json_for_bulk(data):
+    # use filename as _id
+    head = json.dumps({"index" : { "_index": config.INDEX, "_type": config.TYPE, "_id": data.pop("filename") }})
     return head + "\n" + json.dumps(data)
 
 
 def _get_page_data(path):
-    title = _get_page_title(path)
+    # remove '.txt'
+    filename = os.path.basename(path)[:-4]
+    title = _get_page_title(filename)
     modified = int(os.path.getmtime(path) * 1000)
 
     with open(path, encoding="euc-jp", errors='replace') as f:
@@ -44,13 +45,11 @@ def _get_page_data(path):
     return {
             "body": body,
             "title": title,
-            "modified": modified
+            "modified": modified,
+            "filename": filename
             }
 
-def _get_page_title(path):
-    # remove '.txt'
-    filename = os.path.basename(path)[:-4]
-
+def _get_page_title(filename):
     # euc-jp encode <- pukiwiki hex title
     #
     # e.g. "あいう" -> euc-jp: 0xA4 0xA2 0xA4 0xA4 0xA4 0xA6
