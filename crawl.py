@@ -16,6 +16,8 @@ import config
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def crawl():
+    # TODO: deleted pages
+    # TODO: use api
     data = os.path.join(os.path.dirname(__file__), "data")
 
     data_file_path = os.path.join(data, "last_crawled_time")
