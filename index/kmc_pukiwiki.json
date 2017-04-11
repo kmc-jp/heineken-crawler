@@ -1,0 +1,55 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "jp_analyzer": {
+          "tokenizer": "jp_tokenizer",
+          "char_filter": [
+            "html_strip", "icu_normalizer"
+          ],
+          "filter": []
+        },
+
+        "jp_search_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": [
+            "html_strip", "icu_normalizer"
+          ],
+          "filter": []
+        }
+      },
+
+      "tokenizer": {
+        "jp_tokenizer": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 4,
+          "token_chars": [
+            "letter", "digit", "symbol", "punctuation"
+          ]
+        }
+      }
+    }
+  },
+
+  "mappings": {
+    "page": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "jp_analyzer",
+          "search_analyzer": "jp_search_analyzer"
+        },
+        "body": {
+          "type": "text",
+          "analyzer": "jp_analyzer",
+          "search_analyzer": "jp_search_analyzer"
+        },
+        "modified": {
+          "type": "date",
+          "format": "epoch_millis"
+        }
+      }
+    }
+  }
+}
