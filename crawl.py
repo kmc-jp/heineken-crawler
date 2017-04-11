@@ -8,24 +8,17 @@ import glob
 import urllib.request
 import urllib.parse
 
+from els.client import ElsClient
+
 import config
+
+client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def crawl():
     # TODO: 差分のみ
     paths = glob.glob(os.path.join(config.PUKIWIKI_DATA_DIR, "*.txt"))
     bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(x)) for x in paths)
-
-    req = urllib.request.Request(
-            # response after refresh -> ?refresh=wait_for
-            urllib.parse.urljoin(config.ELASTIC_SEARCH_ENDPOINT, "/_bulk"),
-            data=bulk_string.encode("utf8"), 
-            headers={'content-type': 'application/json'}
-            )
-
-    try:
-        urllib.request.urlopen(req)
-    except Exception as e:
-        print(e.read())
+    client.bulk(bulk_string)
 
 def _create_page_json_for_bulk(data):
     # use filename as _id
