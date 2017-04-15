@@ -75,6 +75,10 @@ def _create_page_json_for_bulk(data):
 def _get_page_data(path):
     filename = _get_filename(path)
     title = _get_page_title(filename)
+    title_url_encoded = urllib.parse.quote(
+            # includes '/' for encode
+            title, encoding="euc-jp", safe=''
+            )
     modified = int(os.path.getmtime(path) * 1000)
 
     with open(path, encoding="euc-jp", errors='replace') as f:
@@ -83,6 +87,7 @@ def _get_page_data(path):
     return {
             "body": body,
             "title": title,
+            "title_url_encoded": title_url_encoded,
             "modified": modified,
             "filename": filename
             }

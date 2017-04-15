@@ -32,6 +32,10 @@
           "type": "text",
           "analyzer": "jp_analyzer"
         },
+        "title_url_encoded": {
+          "type": "keyword",
+          "index": false
+        },
         "body": {
           "type": "text",
           "analyzer": "jp_analyzer"
