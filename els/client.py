@@ -50,6 +50,18 @@ class ElsClient:
                 )
         return self._request(req)
 
+    def delete_by_query(self, delete_query_json_string):
+        req = urllib.request.Request(
+                urllib.parse.urljoin(
+                    self.endpoint,
+                    "{0}/_delete_by_query".format(self.index)
+                    ),
+                data=delete_query_json_string.encode("utf8"),
+                headers={'content-type': 'application/json'},
+                method="POST"
+                )
+        return self._request(req)
+
     def _request(self, req):
         try:
             return urllib.request.urlopen(req)
