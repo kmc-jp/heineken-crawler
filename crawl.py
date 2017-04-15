@@ -16,30 +16,55 @@ import config
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def crawl():
-    # TODO: deleted pages
-    # TODO: use api
-    data = os.path.join(os.path.dirname(__file__), "data")
+    all_query = {
+            "sort": { "modified": "desc" },
+            "query": {"match_all": {}},
+            "_source": ["modified"],
+            # els size limit
+            # TODO: paging
+            "size": 10000
+            }
 
-    data_file_path = os.path.join(data, "last_crawled_time")
-
-    if os.path.exists(data_file_path):
-        with open(data_file_path) as f:
-            last_crawled = float(f.read())
+    all_entries = json.loads(
+            client.search(json.dumps(all_query)).read().decode("utf-8")
+            )
+    if all_entries["hits"]["total"] > 0:
+        last_modified = all_entries["hits"]["hits"][0]["_source"]["modified"]
     else:
-        os.makedirs(data, exist_ok=True)
-        last_crawled = 0
+        last_modified = 0
+
+    els_ids = set(map(lambda x: x["_id"], all_entries["hits"]["hits"]))
 
     paths = glob.glob(os.path.join(config.PUKIWIKI_DATA_DIR, "*.txt"))
-    modified_paths = list(filter(lambda x: os.path.getmtime(x) > last_crawled, paths))
+
+    # modified paths or not exist paths (e.g. rename)
+    modified_paths = list(filter(
+        lambda x: int(os.path.getmtime(x) * 1000) > last_modified
+            or not _get_filename(x) in els_ids
+            , paths
+        ))
 
     if modified_paths:
         bulk_string = "\n".join(
                 _create_page_json_for_bulk(_get_page_data(x)) for x in modified_paths
-                )
+                ) + "\n"
         client.bulk(bulk_string)
 
-    with open(data_file_path, "w") as f:
-        f.write(str(time.time()))
+    filenames = list(map(_get_filename, paths))
+    # delete deleted pages by pukiwiki
+    deleted_page_query = {
+            "query": {
+                "bool": {
+                    "must_not": {
+                        "terms": {
+                            "_id": filenames
+                            }
+                        }
+                    }
+                },
+            "_source": ["title"]
+            }
+    client.delete_by_query(json.dumps(deleted_page_query))
 
 def _create_page_json_for_bulk(data):
     # use filename as _id
@@ -48,8 +73,7 @@ def _create_page_json_for_bulk(data):
 
 
 def _get_page_data(path):
-    # remove '.txt'
-    filename = os.path.basename(path)[:-4]
+    filename = _get_filename(path)
     title = _get_page_title(filename)
     modified = int(os.path.getmtime(path) * 1000)
 
@@ -69,5 +93,9 @@ def _get_page_title(filename):
     # e.g. "あいう" -> euc-jp: 0xA4 0xA2 0xA4 0xA4 0xA4 0xA6
     #               -> pukiwiki: A4A2A4A4A4A6.txt
     return bytes.fromhex(filename).decode("euc-jp")
+
+def _get_filename(path):
+    # remove '.txt'
+    return os.path.basename(path)[:-4]
 
 crawl()
