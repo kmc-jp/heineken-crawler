@@ -1,6 +1,10 @@
 # heineken-crawler
 Hayai Kensaku Pukiwiki Crawler
 
+## Requirements
+
+Python 3.x
+
 ## Usage
 
 - crawl
@@ -16,6 +20,6 @@ $ python3 crawl.py
 $ python3 dev-client.py -h
 ```
 
-## Requirements
+## Words in this repository
 
-Python 3.x
+- els => elastic search
