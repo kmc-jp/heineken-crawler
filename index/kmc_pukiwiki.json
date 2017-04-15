@@ -8,14 +8,6 @@
             "html_strip", "icu_normalizer"
           ],
           "filter": []
-        },
-
-        "jp_search_analyzer": {
-          "tokenizer": "keyword",
-          "char_filter": [
-            "html_strip", "icu_normalizer"
-          ],
-          "filter": []
         }
       },
 
@@ -23,7 +15,7 @@
         "jp_tokenizer": {
           "type": "ngram",
           "min_gram": 2,
-          "max_gram": 4,
+          "max_gram": 3,
           "token_chars": [
             "letter", "digit", "symbol", "punctuation"
           ]
@@ -34,16 +26,15 @@
 
   "mappings": {
     "page": {
+      "_all": { "enabled": false },
       "properties": {
         "title": {
           "type": "text",
-          "analyzer": "jp_analyzer",
-          "search_analyzer": "jp_search_analyzer"
+          "analyzer": "jp_analyzer"
         },
         "body": {
           "type": "text",
-          "analyzer": "jp_analyzer",
-          "search_analyzer": "jp_search_analyzer"
+          "analyzer": "jp_analyzer"
         },
         "modified": {
           "type": "date",
