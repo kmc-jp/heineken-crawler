@@ -30,7 +30,8 @@
       "properties": {
         "title": {
           "type": "text",
-          "analyzer": "jp_analyzer"
+          "analyzer": "jp_analyzer",
+          "term_vector" : "with_positions_offsets"
         },
         "title_url_encoded": {
           "type": "keyword",
@@ -38,7 +39,8 @@
         },
         "body": {
           "type": "text",
-          "analyzer": "jp_analyzer"
+          "analyzer": "jp_analyzer",
+          "term_vector" : "with_positions_offsets"
         },
         "modified": {
           "type": "date",
