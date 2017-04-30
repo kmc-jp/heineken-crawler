@@ -31,7 +31,10 @@
         "title": {
           "type": "text",
           "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets"
+          "term_vector" : "with_positions_offsets",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
         },
         "title_url_encoded": {
           "type": "keyword",
@@ -44,7 +47,7 @@
         },
         "modified": {
           "type": "date",
-          "format": "epoch_millis"
+          "format": "strict_date_optional_time||epoch_millis"
         }
       }
     }

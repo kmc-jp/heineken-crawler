@@ -55,7 +55,10 @@ JSON にはコメントが書けないからここにメモを書くよ
         "title": {
           "type": "text",
           "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets"
+          "term_vector" : "with_positions_offsets",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
         },
         "title_url_encoded": {
           "type": "keyword",
@@ -68,7 +71,7 @@ JSON にはコメントが書けないからここにメモを書くよ
         },
         "modified": {
           "type": "date",
-          "format": "epoch_millis"
+          "format": "strict_date_optional_time||epoch_millis"
         }
       }
     }
@@ -81,3 +84,4 @@ JSON にはコメントが書けないからここにメモを書くよ
     - これで highlight が早くなる + 良くなる
 - js で euc-jp エンコードは出来ないので crawler 側で `title_url_encoded` に突っ込んでいる。
 - `_all` を用いると全カラム検索ができるが不要なのでオフ。
+- `title` の長さで boost するために `keyword` field を追加している

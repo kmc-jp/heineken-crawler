@@ -1,5 +1,5 @@
 # dir includes wiki raw data
-PUKIWIKI_DATA_DIR = "/tmp/test/pukiwiki/wiki"
-ELASTIC_SEARCH_ENDPOINT = "http://localhost:9200/"
-INDEX = "test_wiki_index"
+PUKIWIKI_DATA_DIR = "/path/to/pukiwiki/wiki"
+ELASTIC_SEARCH_ENDPOINT = "http://example.com/"
+INDEX = "pukiwiki"
 TYPE = "page"
