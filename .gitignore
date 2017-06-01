@@ -89,3 +89,4 @@ ENV/
 .ropeproject
 
 data/
+config.py
