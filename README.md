@@ -1,5 +1,6 @@
 # heineken-crawler
-Hayai Kensaku Pukiwiki Crawler
+
+Hayai Kensaku Pukiwiki Crawler & Client
 
 ## Requirements
 
@@ -7,19 +8,26 @@ Python 3.x
 
 ## Usage
 
-- crawl
+- Setup
+
+```shell
+$ cp config.py.example config.py
+$ edit config.py
+```
+
+- Crawl
 
 ```shell
 $ python3 crawl.py
 ```
 
-- clients for dev
+- Clients for dev
 
 ```shell
 # show help
 $ python3 dev-client.py -h
 ```
 
-## Words in this repository
+## Words
 
 - els => elastic search
