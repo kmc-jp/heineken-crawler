@@ -21,6 +21,12 @@ $ edit config.py
 $ python3 crawl.py
 ```
 
+- Create index
+
+```shell
+$ python3 dev-client.py add-index index/pukiwiki.json
+```
+
 - Clients for dev
 
 ```shell
