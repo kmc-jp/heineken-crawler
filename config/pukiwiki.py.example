@@ -2,4 +2,5 @@
 PUKIWIKI_DATA_DIR = "/path/to/pukiwiki/wiki"
 ELASTIC_SEARCH_ENDPOINT = "http://example.com/"
 INDEX = "pukiwiki"
+INDEX_FILE = "index/pukiwiki.json"
 TYPE = "page"

@@ -3,6 +3,7 @@ import os
 from functools import reduce
 from datetime import date
 import time
+import argparse
 
 import json
 import glob
@@ -11,11 +12,15 @@ import urllib.parse
 
 from els.client import ElsClient
 
-import config
+from config import pukiwiki as config
 
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
-def crawl():
+def add_index(args):
+    with open(config.INDEX_FILE) as f:
+        client.add_index(f.read())
+
+def crawl(args):
     all_query = {
             "sort": { "modified": "desc" },
             "query": {"match_all": {}},
@@ -103,4 +108,17 @@ def _get_filename(path):
     # remove '.txt'
     return os.path.basename(path)[:-4]
 
-crawl()
+parser = argparse.ArgumentParser(description='PukiWiki crawler for elasticsearch')
+subparsers = parser.add_subparsers()
+
+parser_add = subparsers.add_parser('add-index', help='add index')
+parser_add.set_defaults(func=add_index)
+
+parser_crawl = subparsers.add_parser('crawl', help='crawl')
+parser_crawl.set_defaults(func=crawl)
+
+args = parser.parse_args()
+if hasattr(args, 'func'):
+    args.func(args)
+else:
+    parser.print_help()
