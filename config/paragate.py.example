@@ -1,0 +1,6 @@
+# dir includes wiki raw data
+PARAGATE_MAIL_DIR = "/home/paragate/mail/"
+ELASTIC_SEARCH_ENDPOINT = "http://example.com/"
+INDEX = "mail"
+INDEX_FILE = "index/mail.json"
+TYPE = "message"
