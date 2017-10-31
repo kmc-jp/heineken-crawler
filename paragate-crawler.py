@@ -27,20 +27,26 @@ def crawl(args):
         els_latest = _get_els_latest_index(category)
         local_latest = _get_local_latest_index(category)
 
-        for index in range(els_latest, local_latest):
-            print(category)
-            print(index)
+        for index in range(els_latest + 1, local_latest + 1):
             try:
                 mail_jsons.append(_create_mail_json(category, index))
             except:
                 traceback.print_exc()
 
             if len(mail_jsons) > 300:
-                bulk_string = "\n".join(
-                    _create_json_for_bulk(x) for x in mail_jsons
-                        ) + "\n"
-                client.bulk(bulk_string)
+                _send_bulk_els(mail_jsons)
                 mail_jsons = []
+
+    # Send rest jsons
+    if mail_jsons:
+        _send_bulk_els(mail_jsons)
+
+
+def _send_bulk_els(mail_jsons):
+    bulk_string = "\n".join(
+        _create_json_for_bulk(x) for x in mail_jsons
+            ) + "\n"
+    client.bulk(bulk_string)
 
 
 def _get_categories():
@@ -51,7 +57,7 @@ def _get_categories():
 def _get_local_latest_index(category):
     index_file = os.path.join(config.PARAGATE_MAIL_DIR, category, 'index')
     with open(index_file) as f:
-        return int(f.read())
+        return int(f.read()) - 1
 
 def _get_els_latest_index(category):
     # Fetch last mail per category
