@@ -82,11 +82,11 @@ def _get_page_data(path):
     title = _get_page_title(filename)
     title_url_encoded = urllib.parse.quote(
             # includes '/' for encode
-            title, encoding="euc-jp", safe=''
+            title, safe=''
             )
     modified = int(os.path.getmtime(path) * 1000)
 
-    with open(path, encoding="euc-jp", errors='replace') as f:
+    with open(path, errors='replace') as f:
         body = f.read()
 
     return {
@@ -98,11 +98,11 @@ def _get_page_data(path):
             }
 
 def _get_page_title(filename):
-    # euc-jp encode <- pukiwiki hex title
+    # utf-8 encode <- pukiwiki hex title
     #
-    # e.g. "あいう" -> euc-jp: 0xA4 0xA2 0xA4 0xA4 0xA4 0xA6
-    #               -> pukiwiki: A4A2A4A4A4A6.txt
-    return bytes.fromhex(filename).decode("euc-jp")
+    # e.g. "練習会" -> utf-8: \xE7\xB7\xB4\xE7\xBF\x92\xE4\xBC\x9A
+    #               -> pukiwiki: E7B7B4E7BF92E4BC9A.txt
+    return bytes.fromhex(filename).decode("utf-8")
 
 def _get_filename(path):
     # remove '.txt'
