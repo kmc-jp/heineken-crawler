@@ -3,7 +3,7 @@
 pipeline {
     agent any
     triggers {
-        cron(env.BRANCH_NAME == 'master' ? '*/15 * * * *': '')
+        cron(env.BRANCH_NAME == 'master' ? 'H/15 * * * *': '')
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '1000', daysToKeepStr: '60'))
