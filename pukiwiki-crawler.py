@@ -44,7 +44,8 @@ def crawl(args):
 
     # modified paths or not exist paths (e.g. rename)
     modified_paths = list(filter(
-        lambda x: int(os.path.getmtime(x) * 1000) > last_modified
+        # ctime is always updated unlike mtime
+        lambda x: int(os.path.getctime(x) * 1000) > last_modified
             or not _get_filename(x) in els_ids
             , paths
         ))
@@ -84,7 +85,7 @@ def _get_page_data(path):
             # includes '/' for encode
             title, safe=''
             )
-    modified = int(os.path.getmtime(path) * 1000)
+    modified = int(os.path.getctime(path) * 1000)
 
     with open(path, errors='replace') as f:
         body = f.read()
