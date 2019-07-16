@@ -20,6 +20,11 @@ def add_index(args):
     with open(config.INDEX_FILE) as f:
         client.add_index(f.read())
 
+
+def delete_index(args):
+    client.delete_index()
+
+
 def crawl(args):
     all_query = {
             "sort": { "modified": "desc" },
@@ -114,6 +119,9 @@ subparsers = parser.add_subparsers()
 
 parser_add = subparsers.add_parser('add-index', help='add index')
 parser_add.set_defaults(func=add_index)
+
+parser_add = subparsers.add_parser('delete-index', help='delete index')
+parser_add.set_defaults(func=delete_index)
 
 parser_crawl = subparsers.add_parser('crawl', help='crawl')
 parser_crawl.set_defaults(func=crawl)
