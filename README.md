@@ -2,6 +2,8 @@
 
 Hayai Kensaku Pukiwiki Crawler & Client
 
+Jenkins: https://inside.kmc.gr.jp/jenkins/job/heineken-crawler/
+
 ## Requirements
 
 Python 3.x
