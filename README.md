@@ -14,7 +14,6 @@ Python 3.x
 
 ```shell
 $ pipenv install
-$ cp config/pukiwiki.py.example config/pukiwiki.py
 $ edit config/pukiwiki.py
 ```
 
@@ -42,7 +41,6 @@ $ pipenv run python3 dev-client.py -h
 - Setup
 
 ```shell
-$ cp config/paragate.py.example config/paragate.py
 $ edit config/paragate.py
 ```
 
