@@ -21,7 +21,7 @@ jobs:
            dockerfile: "Dockerfile"
     
     env:
-      IMAGE_NAME: kmc-jp/heineken-crawler
+      IMAGE_NAME: ${{ github.repository }}
 
     runs-on: ubuntu-latest
     permissions:
