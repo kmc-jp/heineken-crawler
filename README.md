@@ -2,13 +2,13 @@
 
 Hayai Kensaku Pukiwiki Crawler & Client
 
-Jenkins: https://inside.kmc.gr.jp/jenkins/job/heineken-crawler/
-
 ## Requirements
 
 Python 3.x
 
 ## Usage
+
+You can also use [Docker image](https://github.com/kmc-jp/heineken-crawler/pkgs/container/heineken-crawler). Entrypoint is `poetry run python3`.
 
 #### PukiWiki
 
@@ -64,4 +64,4 @@ $ poetry run python3 paragate-crawler.py add-index
 
 ## License
 
-See [LICENSE](./LICENSE) for license and [DOCKER_NOTICE] for Docker image notices.
+See [LICENSE](./LICENSE) for license and [DOCKER_NOTICE](./DOCKER_NOTICE) for Docker image notices.
