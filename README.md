@@ -61,3 +61,7 @@ $ pipenv run python3 paragate-crawler.py add-index
 ## Words
 
 - els => elastic search
+
+## License
+
+See [LICENSE](./LICENSE)
