@@ -2,6 +2,9 @@ FROM python:slim
 
 WORKDIR /app
 
+ENV PYTHONBUFFERED=1
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
+
 RUN pip install poetry
 
 COPY ./poetry.lock ./pyproject.toml /app/
