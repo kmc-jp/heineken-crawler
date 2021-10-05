@@ -15,27 +15,27 @@ Python 3.x
 - Setup
 
 ```shell
-$ pipenv install
+$ poetry install
 $ edit config/pukiwiki.py
 ```
 
 - Crawl
 
 ```shell
-$ pipenv run python3 pukiwiki-crawler.py crawl
+$ poetry run python3 pukiwiki-crawler.py crawl
 ```
 
 - Create index
 
 ```shell
-$ pipenv run python3 pukiwiki-crawler.py add-index
+$ poetry run python3 pukiwiki-crawler.py add-index
 ```
 
 - Clients for dev
 
 ```shell
 # show help
-$ pipenv run python3 dev-client.py -h
+$ poetry run python3 dev-client.py -h
 ```
 
 #### Mail (Paragate)
@@ -49,13 +49,13 @@ $ edit config/paragate.py
 - Crawl
 
 ```shell
-$ pipenv run python3 paragate-crawler.py crawl
+$ poetry run python3 paragate-crawler.py crawl
 ```
 
 - Create index
 
 ```shell
-$ pipenv run python3 paragate-crawler.py add-index
+$ poetry run python3 paragate-crawler.py add-index
 ```
 
 ## Words
