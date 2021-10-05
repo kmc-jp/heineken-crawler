@@ -64,4 +64,4 @@ $ poetry run python3 paragate-crawler.py add-index
 
 ## License
 
-See [LICENSE](./LICENSE)
+See [LICENSE](./LICENSE) for license and [DOCKER_NOTICE] for Docker image notices.
