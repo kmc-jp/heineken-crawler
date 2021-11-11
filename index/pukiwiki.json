@@ -25,30 +25,27 @@
   },
 
   "mappings": {
-    "page": {
-      "_all": { "enabled": false },
-      "properties": {
-        "title": {
-          "type": "text",
-          "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets",
-          "fields": {
-            "keyword": { "type": "keyword" }
-          }
-        },
-        "title_url_encoded": {
-          "type": "keyword",
-          "index": false
-        },
-        "body": {
-          "type": "text",
-          "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets"
-        },
-        "modified": {
-          "type": "date",
-          "format": "strict_date_optional_time||epoch_millis"
-        }
+   "properties": {
+      "title": {
+         "type": "text",
+         "analyzer": "jp_analyzer",
+         "term_vector" : "with_positions_offsets",
+         "fields": {
+         "keyword": { "type": "keyword" }
+         }
+      },
+      "title_url_encoded": {
+         "type": "keyword",
+         "index": false
+      },
+      "body": {
+         "type": "text",
+         "analyzer": "jp_analyzer",
+         "term_vector" : "with_positions_offsets"
+      },
+      "modified": {
+         "type": "date",
+         "format": "strict_date_optional_time||epoch_millis"
       }
     }
   }
