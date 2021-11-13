@@ -3,22 +3,11 @@
     "analysis": {
       "analyzer": {
         "jp_analyzer": {
-          "tokenizer": "jp_tokenizer",
+          "tokenizer": "standard",
           "char_filter": [
             "html_strip", "icu_normalizer"
           ],
-          "filter": []
-        }
-      },
-
-      "tokenizer": {
-        "jp_tokenizer": {
-          "type": "ngram",
-          "min_gram": 2,
-          "max_gram": 2,
-          "token_chars": [
-            "letter", "digit", "symbol", "punctuation"
-          ]
+          "filter": ["cjk_bigram"]
         }
       }
     }
