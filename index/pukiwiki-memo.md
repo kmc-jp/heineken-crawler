@@ -15,22 +15,11 @@ JSON にはコメントが書けないからここにメモを書くよ
     "analysis": {
       "analyzer": {
         "jp_analyzer": {
-          "tokenizer": "jp_tokenizer",
+          "tokenizer": "standard",
           "char_filter": [
             "html_strip", "icu_normalizer"
           ],
-          "filter": []
-        }
-      },
-
-      "tokenizer": {
-        "jp_tokenizer": {
-          "type": "ngram",
-          "min_gram": 2,
-          "max_gram": 3,
-          "token_chars": [
-            "letter", "digit", "symbol", "punctuation"
-          ]
+          "filter": ["cjk_bigram"]
         }
       }
     }
@@ -39,8 +28,7 @@ JSON にはコメントが書けないからここにメモを書くよ
 
 ここには index の設定が入る。 
 
-- tokenizer には `jp_tokenizer` を定義していて、n-gram を使っている。 n-gram なので検索に漏れがない。
-- `token_chars` に記号を含めているので記号にもヒットする。
+- tokenizer には `jp_tokenizer` を定義していて、`cjk_bigram` を使っている。英文は単語ごとに、和文は2-gram として処理される。
 - `char_filter` は `tokenizer` に入れる前にフィルタリングする。
   - `html_strip` は HTML タグを除く。
   - `icu_normalizer` は日本語のノーマライザで、ひらがな・カタカナの調整をする。また、case insensitive にもしてくれる。

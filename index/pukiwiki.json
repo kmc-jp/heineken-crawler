@@ -3,12 +3,12 @@
     "analysis": {
       "analyzer": {
         "jp_analyzer": {
-               "tokenizer": "standard",
-               "char_filter": [
-                  "html_strip", "icu_normalizer"
-               ],
-               "filter": ["cjk_bigram"]
-            }
+          "tokenizer": "standard",
+          "char_filter": [
+            "html_strip", "icu_normalizer"
+          ],
+          "filter": ["cjk_bigram"]
+        }
       }
     }
   },
