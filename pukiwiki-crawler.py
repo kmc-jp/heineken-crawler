@@ -38,7 +38,7 @@ def crawl(args):
     all_entries = json.loads(
             client.search(json.dumps(all_query)).read().decode("utf-8")
             )
-    if all_entries["hits"]["total"] > 0:
+    if all_entries["hits"]["total"]["relation"] in ("gte", "eq") and all_entries["hits"]["total"]["value"] > 0:
         last_modified = all_entries["hits"]["hits"][0]["_source"]["modified"]
     else:
         last_modified = 0
@@ -79,7 +79,7 @@ def crawl(args):
 
 def _create_page_json_for_bulk(data):
     # use filename as _id
-    head = json.dumps({"index" : { "_index": config.INDEX, "_type": config.TYPE, "_id": data.pop("filename") }})
+    head = json.dumps({"index" : { "_index": config.INDEX, "_id": data.pop("filename") }})
     return head + "\n" + json.dumps(data)
 
 

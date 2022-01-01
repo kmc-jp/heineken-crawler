@@ -20,7 +20,6 @@ def search(args):
                     # boost title
                     "fields": ["title^5", "body"],
                     "query": args.query,
-                    "auto_generate_phrase_queries": True
                     }
                 }
             }

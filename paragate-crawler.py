@@ -74,7 +74,7 @@ def _get_els_latest_index(category):
             client.search(json.dumps(query)).read().decode('utf-8')
             )
 
-    if result['hits']['total'] == 0:
+    if result['hits']['total']["value"] == 0:
         return -1
     else:
         return result['hits']['hits'][0]['_source']['index']
@@ -198,7 +198,6 @@ def _create_json_for_bulk(data):
     head = json.dumps({
         "index": {
             "_index": config.INDEX,
-            "_type": config.TYPE,
             "_id": "{0}/{1}".format(data['category'], data['index'])
             }
         })
