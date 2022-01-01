@@ -58,6 +58,14 @@ $ poetry run python3 paragate-crawler.py crawl
 $ poetry run python3 paragate-crawler.py add-index
 ```
 
+## Tips
+
+To access dev app in kubernetes...
+
+```
+$ kubectl port-forward service/{svc name} 9200:9200
+```
+
 ## Words
 
 - els => elastic search
