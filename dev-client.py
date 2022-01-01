@@ -20,8 +20,6 @@ def search(args):
                     # boost title
                     "fields": ["title^5", "body"],
                     "query": args.query,
-                    # auto_generate_synonyms_phrase_query is true by default
-                    # "auto_generate_synonyms_phrase_query": True
                     }
                 }
             }
