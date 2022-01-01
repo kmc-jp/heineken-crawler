@@ -8,30 +8,33 @@
 
 ```json
   "mappings": {
-    "message": {
-      "_all": { "enabled": false },
-      "properties": {
-        "subject": {
-          "type": "text",
-          "analyzer": "jp_analyzer"
-        },
-        "from": {
-          "type": "text",
-          "analyzer": "standard"
-        },
-        "to": {
-          "type": "text",
-          "analyzer": "standard"
-        },
-        "content": {
-          "type": "text",
-          "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets"
-        },
-        "date": {
-          "type": "date",
-          "format": "strict_date_optional_time||epoch_millis"
-        }
+    "properties": {
+      "category": {
+        "type": "keyword"
+      },
+      "index": {
+        "type": "integer"
+      },
+      "from": {
+        "type": "text",
+        "analyzer": "simple"
+      },
+      "to": {
+        "type": "text",
+        "analyzer": "simple"
+      },
+      "subject": {
+        "type": "text",
+        "analyzer": "jp_analyzer"
+      },
+      "body": {
+        "type": "text",
+        "analyzer": "jp_analyzer",
+        "term_vector" : "with_positions_offsets"
+      },
+      "date": {
+        "type": "date",
+        "format": "strict_date_optional_time||epoch_millis"
       }
     }
   }

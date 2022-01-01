@@ -37,30 +37,27 @@ JSON にはコメントが書けないからここにメモを書くよ
 
 ```json
   "mappings": {
-    "page": {
-      "_all": { "enabled": false },
-      "properties": {
-        "title": {
-          "type": "text",
-          "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets",
-          "fields": {
-            "keyword": { "type": "keyword" }
-          }
-        },
-        "title_url_encoded": {
-          "type": "keyword",
-          "index": false
-        },
-        "body": {
-          "type": "text",
-          "analyzer": "jp_analyzer",
-          "term_vector" : "with_positions_offsets"
-        },
-        "modified": {
-          "type": "date",
-          "format": "strict_date_optional_time||epoch_millis"
-        }
+   "properties": {
+      "title": {
+         "type": "text",
+         "analyzer": "jp_analyzer",
+         "term_vector" : "with_positions_offsets",
+         "fields": {
+         "keyword": { "type": "keyword" }
+         }
+      },
+      "title_url_encoded": {
+         "type": "keyword",
+         "index": false
+      },
+      "body": {
+         "type": "text",
+         "analyzer": "jp_analyzer",
+         "term_vector" : "with_positions_offsets"
+      },
+      "modified": {
+         "type": "date",
+         "format": "strict_date_optional_time||epoch_millis"
       }
     }
   }
@@ -71,5 +68,4 @@ JSON にはコメントが書けないからここにメモを書くよ
 - highlight (検索結果の語彙のハイライト) のために `term_vector` を `with_positions_offsets` にしている。
     - これで highlight が早くなる + 良くなる
 - js で euc-jp エンコードは出来ないので crawler 側で `title_url_encoded` に突っ込んでいる。
-- `_all` を用いると全カラム検索ができるが不要なのでオフ。
 - `title` の長さで boost するために `keyword` field を追加している
