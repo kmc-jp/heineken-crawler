@@ -18,11 +18,11 @@ client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def add_index(args):
     with open(config.INDEX_FILE) as f:
-        client.add_index(f.read())
+        print(client.add_index(f.read()).read().decode("utf-8"))
 
 
 def delete_index(args):
-    client.delete_index()
+    print(client.delete_index().read().decode("utf-8"))
 
 
 def crawl(args):
@@ -59,7 +59,7 @@ def crawl(args):
         bulk_string = "\n".join(
                 _create_page_json_for_bulk(_get_page_data(x)) for x in modified_paths
                 ) + "\n"
-        client.bulk(bulk_string)
+        print(client.bulk(bulk_string).read().decode("utf-8"))
 
     filenames = list(map(_get_filename, paths))
     # delete deleted pages by pukiwiki
@@ -75,7 +75,7 @@ def crawl(args):
                 },
             "_source": ["title"]
             }
-    client.delete_by_query(json.dumps(deleted_page_query))
+    print(client.delete_by_query(json.dumps(deleted_page_query)).read().decode("utf-8"))
 
 def _create_page_json_for_bulk(data):
     # use filename as _id
