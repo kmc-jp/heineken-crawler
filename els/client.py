@@ -1,10 +1,21 @@
-import urllib.request
 import urllib.parse
+import urllib.request
+
 
 class ElsClient:
     def __init__(self, endpoint, index):
         self.endpoint = endpoint
         self.index = index
+
+    def get_index(self, index=None):
+        if not index: index = self.index
+
+        req = urllib.request.Request(
+                urllib.parse.urljoin(self.endpoint, "/" + self.index),
+                headers={'content-type': 'application/json'},
+                method="GET"
+                )
+        return self._request(req)
 
     def add_index(self, index_json_string, index=None):
         if not index: index = self.index

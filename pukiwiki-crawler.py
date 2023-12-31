@@ -1,24 +1,26 @@
-import urllib.parse
-import os
-from functools import reduce
-from datetime import date
-import time
 import argparse
-
-import json
 import glob
-import urllib.request
+import json
+import os
 import urllib.parse
-
-from els.client import ElsClient
+import urllib.request
+from urllib.error import HTTPError
 
 from config import pukiwiki as config
+from els.client import ElsClient
 
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def add_index(args):
-    with open(config.INDEX_FILE) as f:
-        print(client.add_index(f.read()).read().decode("utf-8"))
+    # Add index if not exists
+    try:
+        client.get_index()
+    except HTTPError as e:
+        if e.status == 404:
+            with open(config.INDEX_FILE) as f:
+                print(client.add_index(f.read()).read().decode("utf-8"))
+        else:
+            raise
 
 
 def delete_index(args):
