@@ -5,7 +5,7 @@ WORKDIR /app
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
-RUN apt update && apt install -y libxml2-dev libxslt1-dev
+RUN apt update && apt install -y libxml2-dev libxslt1-dev gcc
 
 RUN pip install poetry
 
