@@ -89,6 +89,8 @@ def crawl(args):
         for i in range(0, len(modified_page_titles), BULK_SIZE):
             logger.info(f"start bulk create: {i} - {i+BULK_SIZE} / {len(modified_page_titles)}")
             bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(cookies, x)) for x in modified_page_titles[i:i+BULK_SIZE]) + "\n"
+            if bulk_string.strip() == "":
+                continue
             logger.info(client.bulk(bulk_string).read().decode("utf-8"))
 
     # streamのeventから削除対象ページを取得
@@ -96,10 +98,10 @@ def crawl(args):
     response.raise_for_status()
     raw_stream = response.json()
     deleted_page_ids =[]
-    for stream in raw_stream:
-        if stream["type"] == "page.delete" and stream["id"] in els_ids and stream["id"] not in deleted_page_ids:
-            deleted_page_ids.append(stream["id"])
-
+    for event in raw_stream["events"]:
+        if event["type"] == "page.delete" and event["pageId"] in els_ids and event["pageId"] not in deleted_page_ids:
+            deleted_page_ids.append(event["pageId"])
+    logger.info(f"number of deleted pages: {len(deleted_page_ids)}")
     if len(deleted_page_ids) > 0:
         deleted_page_query = {
                 "query": {
@@ -116,12 +118,18 @@ def crawl(args):
         logger.info(client.delete_by_query(json.dumps(deleted_page_query)).read().decode("utf-8"))
     
 def _create_page_json_for_bulk(data):
+    if data == {}:
+        return ""
     head = json.dumps({"index" : { "_index": config.INDEX, "_id": data.pop("_id") }})
     return head + "\n" + json.dumps(data)
 
 def _get_page_data(cookies, page_title):
+    # page_titleが"."のpageがあり、pathが空白になってしまうので除外する
+    if page_title == ".":
+        return {}
     # デフォルトで/はエンコードされないので、safe=''を指定する
-    url = urllib.parse.urljoin(config.SCRAPBOX_ENDPOINT, f"/api/pages/{config.SCRAPBOX_PROJECT}/{urllib.parse.quote(page_title, safe='')}")
+    path = f"/api/pages/{config.SCRAPBOX_PROJECT}/{urllib.parse.quote(page_title, safe='')}"
+    url = urllib.parse.urljoin(config.SCRAPBOX_ENDPOINT, path)
     response = requests.get(url, cookies=cookies)
     response.raise_for_status()
     page = response.json()
