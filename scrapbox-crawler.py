@@ -55,6 +55,7 @@ def crawl(args):
     else:
         last_modified = 0
 
+    logger.info(f"last modified: {datetime.fromtimestamp(last_modified)}")
     els_ids = set(map(lambda x: x["_id"], all_entries["hits"]["hits"]))
 
 
@@ -75,7 +76,7 @@ def crawl(args):
                     modified_page_titles.append(page["title"]) 
 
         # 一番最後のpageが更新されていなければ、次ページの探索をやめる
-        if raw_pages["pages"][-1]["title"] != modified_page_titles[-1]:
+        if len(modified_page_titles) !=0 and raw_pages["pages"][-1]["title"] != modified_page_titles[-1]:
             break
         offset += 100
         if offset > raw_pages["count"]:
@@ -87,7 +88,7 @@ def crawl(args):
         # BULK_SIZE個ずつbulk createする
         for i in range(0, len(modified_page_titles), BULK_SIZE):
             logger.info(f"start bulk create: {i} - {i+BULK_SIZE} / {len(modified_page_titles)}")
-            bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(cookies, x)) for x in modified_page_titles[i:i+100]) + "\n"
+            bulk_string = "\n".join(_create_page_json_for_bulk(_get_page_data(cookies, x)) for x in modified_page_titles[i:i+BULK_SIZE]) + "\n"
             logger.info(client.bulk(bulk_string).read().decode("utf-8"))
 
     # streamのeventから削除対象ページを取得
