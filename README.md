@@ -58,6 +58,28 @@ $ poetry run python3 paragate-crawler.py crawl
 $ poetry run python3 paragate-crawler.py add-index
 ```
 
+#### Scrapbox
+
+- Setup
+
+```shell
+$ edit config/scrapbox.py
+```
+
+`SCRAPBOX_CONNECT_SID` はブラウザの開発者ツールから `cookie[connect.sid]` を取得してください。
+
+- Crawl
+
+```shell
+$ poetry run python3 scrapbox-crawler.py crawl
+```
+
+- Create index
+
+```shell
+$ poetry run python3 scrapbox-crawler.py add-index
+```
+
 ## Tips
 
 To access dev app in kubernetes...

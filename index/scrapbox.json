@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "jp_analyzer": {
+          "tokenizer": "jp_tokenizer",
+          "char_filter": ["html_strip", "icu_normalizer"],
+          "filter": []
+        }
+      },
+
+      "tokenizer": {
+        "jp_tokenizer": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 2,
+          "token_chars": ["letter", "digit", "symbol", "punctuation"]
+        }
+      }
+    }
+  },
+
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer": "jp_analyzer",
+        "term_vector": "with_positions_offsets",
+        "fields": {
+          "keyword": { "type": "keyword" }
+        }
+      },
+      "body": {
+        "type": "text",
+        "analyzer": "jp_analyzer",
+        "term_vector": "with_positions_offsets"
+      },
+      "modified": {
+        "type": "date",
+        "format": "strict_date_optional_time||epoch_millis"
+      }
+    }
+  }
+}
