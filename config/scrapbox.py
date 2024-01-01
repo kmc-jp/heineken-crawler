@@ -1,0 +1,6 @@
+SCRAPBOX_ENDPOINT = "https://scrapbox.io/"
+SCRAPBOX_PROJECT = "kmc"
+SCRAPBOX_CONNECT_SID = "<cookieから取得>"
+ELASTIC_SEARCH_ENDPOINT = "http://localhost:9200/"
+INDEX = "scrapbox"
+INDEX_FILE = "index/scrapbox.json"

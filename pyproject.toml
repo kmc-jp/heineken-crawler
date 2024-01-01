@@ -9,6 +9,7 @@ license = "CC0"
 python = "^3.9"
 beautifulsoup4 = "*"
 lxml = "^4.9.3"
+requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 
