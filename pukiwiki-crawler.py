@@ -116,20 +116,21 @@ def _get_filename(path):
     # remove '.txt'
     return os.path.basename(path)[:-4]
 
-parser = argparse.ArgumentParser(description='PukiWiki crawler for elasticsearch')
-subparsers = parser.add_subparsers()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='PukiWiki crawler for elasticsearch')
+    subparsers = parser.add_subparsers()
 
-parser_add = subparsers.add_parser('add-index', help='add index')
-parser_add.set_defaults(func=add_index)
+    parser_add = subparsers.add_parser('add-index', help='add index')
+    parser_add.set_defaults(func=add_index)
 
-parser_add = subparsers.add_parser('delete-index', help='delete index')
-parser_add.set_defaults(func=delete_index)
+    parser_add = subparsers.add_parser('delete-index', help='delete index')
+    parser_add.set_defaults(func=delete_index)
 
-parser_crawl = subparsers.add_parser('crawl', help='crawl')
-parser_crawl.set_defaults(func=crawl)
+    parser_crawl = subparsers.add_parser('crawl', help='crawl')
+    parser_crawl.set_defaults(func=crawl)
 
-args = parser.parse_args()
-if hasattr(args, 'func'):
-    args.func(args)
-else:
-    parser.print_help()
+    args = parser.parse_args()
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_help()
