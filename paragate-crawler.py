@@ -52,7 +52,7 @@ def _send_bulk_els(mail_jsons):
     bulk_string = "\n".join(
         _create_json_for_bulk(x) for x in mail_jsons
             ) + "\n"
-    print(client.bulk(bulk_string))
+    print(client.bulk(bulk_string).read().decode("utf-8"))
 
 
 def _get_categories():
