@@ -1,11 +1,10 @@
-import urllib.parse
 import os
+from urllib.error import HTTPError
 from datetime import datetime
 import argparse
 import email
 from email import policy, utils
 import json
-import itertools
 import traceback
 
 from bs4 import BeautifulSoup
@@ -16,8 +15,15 @@ from config import paragate as config
 client = ElsClient(config.ELASTIC_SEARCH_ENDPOINT, config.INDEX)
 
 def add_index(args):
-    with open(config.INDEX_FILE) as f:
-        client.add_index(f.read())
+    # Add index if not exists
+    try:
+        client.get_index()
+    except HTTPError as e:
+        if e.status == 404:
+            with open(config.INDEX_FILE) as f:
+                print(client.add_index(f.read()).read().decode("utf-8"))
+        else:
+            raise
 
 def crawl(args):
     categories = _get_categories()
@@ -46,7 +52,7 @@ def _send_bulk_els(mail_jsons):
     bulk_string = "\n".join(
         _create_json_for_bulk(x) for x in mail_jsons
             ) + "\n"
-    client.bulk(bulk_string)
+    print(client.bulk(bulk_string))
 
 
 def _get_categories():
@@ -203,17 +209,18 @@ def _create_json_for_bulk(data):
         })
     return head + "\n" + json.dumps(data)
 
-parser = argparse.ArgumentParser(description='Paragate (mail) crawler for elasticsearch')
-subparsers = parser.add_subparsers()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Paragate (mail) crawler for elasticsearch')
+    subparsers = parser.add_subparsers()
 
-parser_add = subparsers.add_parser('add-index', help='add index')
-parser_add.set_defaults(func=add_index)
+    parser_add = subparsers.add_parser('add-index', help='add index')
+    parser_add.set_defaults(func=add_index)
 
-parser_crawl = subparsers.add_parser('crawl', help='crawl')
-parser_crawl.set_defaults(func=crawl)
+    parser_crawl = subparsers.add_parser('crawl', help='crawl')
+    parser_crawl.set_defaults(func=crawl)
 
-args = parser.parse_args()
-if hasattr(args, 'func'):
-    args.func(args)
-else:
-    parser.print_help()
+    args = parser.parse_args()
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_help()
